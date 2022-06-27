@@ -1,27 +1,19 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React from "react";
+
+// submit a food and you should see "successfully submitted x"
 
 export default function Home() {
     async function makeRequestApi() {
-        const response = await fetch("api/")
+
+        const response = await fetch('https://us-central1-learnfirebase-544b9.cloudfunctions.net/get_food?food=pizza')
+        console.log(response)
         const data = await response.json()
-        // console.log(data[0].food)
-        console.log(data)
+        console.log(data.food)
     }
-
-    async function makeRequestDate() {
-        const response = await fetch("api/date")
-        const data = await response.text()
-        console.log(data)
-    }
-
-
 
     return (
         <div>
             <button onClick={makeRequestApi}>Make request to api/</button>
-            <button onClick={makeRequestDate}>Make request to api/date</button>
         </div>
     )
 }
