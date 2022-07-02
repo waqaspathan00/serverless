@@ -13,10 +13,17 @@
 # limitations under the License.
 
 import flask
+import requests, json
 from util import Response
 
 def get_food(request):
-    request_args = request.args
-    food = request_args["food"]
-
-    return Response({"food": food}, 200)
+    if request.method == "GET":
+        food = request.args["food"]  # get food from url as query param
+        if food:
+            # perform http get request on api route
+            url = f"https://api.spoonacular.com/recipes/complexSearch?apiKey=a8529c104d8749b4a19488d0fd654353&query={food}"
+            response = requests.get(url)
+            data = json.loads(response.text)
+            return Response(data, 200)
+        return Response("Must pass query param for food", 400)
+    return Response("Invalid request method, use GET", 400)
